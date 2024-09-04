@@ -1,0 +1,103 @@
+/* Full viewport height container */
+.login-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    background-color: rgb(1, 19, 22);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.login-content {
+    width: 80%;
+    max-width: 60%;
+    display: flex;
+    border-radius: 15px;
+    background-color: #fff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.form-content {
+    width: 60%;
+    padding: 30px;
+    text-align: left;
+}
+
+.form-image {
+    width: 40%;
+    background: url('../../assets/background.jpg') no-repeat center center;
+    background-size: cover;
+    border-radius: 0 15px 15px 0;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 2rem;
+    color: #007bff;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+input{
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    border-color: #007bff;
+}
+
+
+.social-login {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.social-login p {
+    margin-bottom: 15px;
+    color: #555;
+}
+
+.social-login svg {
+    margin: 0 12px;
+    cursor: pointer;
+}
+
+
+.btns{
+    display: flex;
+    gap: 20px;
+}
+.btn{
+    width: 100%;
+    padding: 12px;
+        border: none;
+        border-radius: 8px;
+        background-color: #007bff;
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+    background-color: #040905;
+}
+.btn:hover{
+    border: 1px black solid;
+    background-color: white;
+    color: black;
+}
