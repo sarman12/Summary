@@ -3,20 +3,17 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const { Sequelize, DataTypes } = require('sequelize');
 
-// Initialize Express app
 const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
 
-// Initialize Sequelize with SQLite
 const sequelize = new Sequelize({
     dialect: 'sqlite',
     storage: './database.db'
 });
 
-// Define the User model
 const User = sequelize.define('User', {
     username: {
         type: DataTypes.STRING,
@@ -34,7 +31,6 @@ const User = sequelize.define('User', {
     }
 });
 
-// Sync the database and create tables if they don't exist
 sequelize.sync()
     .then(() => {
         console.log('Database & tables created!');
