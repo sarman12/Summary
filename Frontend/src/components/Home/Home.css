@@ -40,55 +40,105 @@
     padding: 50px 20px;
     border-radius: 10px;
     text-align: center;
+    width: 1450px;
+    margin: auto;
+    margin-top: 2rem;
     background-color: rgb(1, 19, 22,0.8);
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
 }
 
 .hero-banner h2 {
-    font-size: 3rem;
-    margin-bottom: 20px;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    color: white;
 }
 
 .hero-banner p {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     margin-bottom: 30px;
-}
-.drag_drop{
-    /* border:2px red solid; */
-    padding:1rem;
-    margin: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-.drag_drop div{
-    background-color:rgba(67, 67, 96, 0.8);
-    width: 190px;
-    padding: 8px;
-    border-radius: 5px;
-
-    margin: auto;
-    font-size: 20px;
-    cursor: pointer;
     
 }
-.drag_drop input{
-    width: 250px;
-    margin: auto;
+.banner-options {
+    /* border: 2px red solid; */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding: 2rem;
+    background-color: hsl(189, 91%, 5%,0.8);
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
 }
-.hero-button {
-    margin: 10px;
-    padding: 12px 20px;
-    border: 4px rgb(228, 9, 9) solid;
-    background-color: rgba(255, 255, 255, 0.9);
-    color: white;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+.banner-content{
+    /* border: 2px red solid; */
+    width:40%;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    padding: 1rem;
+    height: fit-content;
+    
 }
 
-.hero-button:hover {
-    background-color: #00796b;
+
+.video-section {
+    width: 58%;
+    /* border: 2px red solid; */
+}
+.video-section div{
+    margin: auto;
+        margin-top: 2rem;
+        text-align: center;
+
+}
+
+.video-section div video {
+    opacity: 0.6;
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+}
+.banner-item {
+    display: flex;
+    background-color: rgba(220, 229, 231, 0.1);
+    color: white;
+    min-width: 500px;
+    max-width: 800px;
+    padding: 1rem;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0px 4px 15px rgba(4, 74, 98, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+}
+
+.banner-item h3 {
+    font-size: 1rem;
+    color: #c5ecf1;
+    margin: auto;
+}
+
+.banner-item p {
+
+    font-size: 0.9rem;
+    color: #d1d5db;
+    margin: auto;
+}
+
+
+
+
+
+@media (max-width: 768px) {
+    .banner-options {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .banner-item {
+        width: 100%;
+    }
 }
 
 .home-content {
@@ -130,6 +180,8 @@
 }
 
 .home-footer {
+    position: relative;
+    bottom: 0;
     padding: 20px;
     background-color: rgb(1, 19, 22);
     text-align: center;
@@ -148,43 +200,21 @@
     text-decoration: underline;
 }
 
-.extracted-text-section{
-    background-color: rgb(0, 0, 0,0.5);
-    color: rgb(244, 241, 241);
-    overflow-y: scroll;
-    height: fit-content;
-    width: 80%;
-    margin: auto;
-    padding: 2rem;
-
-    line-height:1.2rem;
-    text-align: left;
-    border-radius: 1rem;
-}
-.extracted-text-section::-webkit-scrollbar {
-    display: none;
-}
-.extracted-text-section h3{
-    text-align: center;
-    margin:10px;
-    font-size: 1.5rem;
-    color: #e56186;
-}
 
 
 
 
 .glow-on-hover {
     margin-top: 10px;
-    width: 160px;
-    height: 55px;
+    width: 120px;
+    height: 50px;
     border: none;
     outline: none;
-    color: #fff;
+    color: #ffffff;
     cursor: pointer;
     position: relative;
     z-index: 0;
-    font-size: 1.2rem;
+    font-size: 1rem;
     background-color: transparent;
     font-weight: bold;
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -199,8 +229,8 @@
     background-size: 400%;
     z-index: -1;
     filter: blur(6px);
-    width: calc(100% + 8px);
-    height: calc(100% + 8px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
     animation: glowing 15s linear infinite;
     opacity: 0;
     transition: opacity 0.4s ease-in-out;
@@ -217,7 +247,7 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    background: rgba(250, 54, 139, 0.7);
+    background: rgba(255, 255, 255, 0.2);
     left: 0;
     top: 0;
     border-radius: 10px;

@@ -11,7 +11,7 @@ function App() {
         <Route path="/" element={<Home />}/>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/summarize" element={<Summarize />} />
+        <Route path="/pdf-to-text" element={<Summarize />} />
       </Routes>
     </BrowserRouter>
   );

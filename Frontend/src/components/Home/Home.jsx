@@ -1,95 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import * as pdfjsLib from 'pdfjs-dist/build/pdf';
 import './Home.css';
+import Video from '../../assets/video1.mp4'
 
 function Home() {
-  const [pdfFile, setPdfFile] = useState(null);
-  const [extractedText, setExtractedText] = useState('');
-  const [device, setDevice] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
-  }, []);
-
-  const handlePdfUpload = (e) => {
-    const file = e.target.files[0];
-    if (file && file.type === 'application/pdf') {
-      setPdfFile(file);
-      setExtractedText(''); // Clear previous text
-      setError(''); // Clear previous errors
-    } else {
-      alert('Please upload a valid PDF file.');
-    }
-  };
-
-  const extractText = async (url) => {
-  setLoading(true); // Start loading
-  setError(''); // Clear previous errors
-
-  try {
-    const pdf = await pdfjsLib.getDocument({ url }).promise;
-    let text = '';
-    const numPages = pdf.numPages;
-
-    for (let i = 1; i <= numPages; i++) {
-      const page = await pdf.getPage(i);
-      const content = await page.getTextContent();
-      let pageText = content.items.map(item => item.str).join(' ');
-
-      // Add some basic formatting for readability
-      pageText = formatText(pageText);
-      text += pageText + '\n';
-    }
-
-    setExtractedText(text);
-  } catch (error) {
-    console.error('Error extracting text: ', error);
-    setError('Failed to extract text. Please check if the PDF is valid and try again.');
-  } finally {
-    setLoading(false); // Stop loading
-  }
-};
-
-// Simple formatter function
-const formatText = (text) => {
-  // Trim extra spaces and add line breaks at double spaces or periods.
-  return text
-    .replace(/\s{2,}/g, '\n') // Break paragraphs on two or more spaces
-    .replace(/([.!?])\s*(?=[A-Z])/g, '$1\n') // Add line breaks after sentences
-    .trim();
-};
-
-
-  const handleExtractText = () => {
-    if (!pdfFile) {
-      alert('Please upload a PDF file first.');
-      return;
-    }
-
-    const fr = new FileReader();
-    fr.readAsDataURL(pdfFile);
-    fr.onload = function () {
-      const result = fr.result;
-      extractText(result);
-    };
-  };
-
-  const handleSaveTextAsFile = () => {
-    const blob = new Blob([extractedText], { type: 'text/plain' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'extracted_text.txt';
-    link.click();
-  };
-
-  const handleClearText = () => {
-    setExtractedText('');
-    setPdfFile(null);
-    setDevice(false);
-  };
+  
 
   return (
     <div className="home-container">
@@ -101,58 +16,65 @@ const formatText = (text) => {
             <Link to="/register" className="nav-link">Register</Link>
           </div>
         </nav>
-        <div className="hero-banner">
-          <h2>Effortlessly Summarize Your PDFs</h2>
-          <p>Upload your PDF and get a concise summary using cutting-edge AI technology.</p>
-
-          <div className="drag_drop">
-            {device ? (
-              <input
-                type="file"
-                className="file-input"
-                accept="application/pdf"
-                onChange={handlePdfUpload}
-                aria-label="Upload PDF file"
-              />
-            ) : (
-              <div className="select-device" onClick={() => setDevice(true)} aria-label="Select PDF file from device">
-                Select from Device
-              </div>
-            )}
-            <div>Google Drive</div>
-            <p>or drag and drop here</p>
-          </div>
-
-          {loading && <p>Loading...</p>}
-          {error && <p className="error-message">{error}</p>}
-
-          {extractedText && 
-            <section className="extracted-text-section">
-              <h3>Extracted Text:</h3>
-              <pre style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}>
-                {extractedText}
-              </pre>
-              
-              <button className='glow-on-hover' onClick={handleClearText} disabled={loading}>
-                Clear Text
-              </button>
-            </section>
-            }
-            {!extractedText ? (
-                    <button className="glow-on-hover" onClick={handleExtractText} disabled={loading}>
-                      Extract Text
-                    </button>
-                  ) : (
-                    // <button className='hero-button' onClick={handleSaveTextAsFile} disabled={loading}>
-                    //   Download
-                    // </button>
-                    <button class="glow-on-hover" onClick={handleSaveTextAsFile} disabled={loading} type="button">Download</button>
-
-                  )}
-
-          
-        </div>
       </header>
+
+      <div className="hero-banner">
+          <h2>Effortlessly Work with Your PDFs</h2>
+          <p>Choose from a variety of tools to handle your PDF files quickly and easily.</p>
+      
+          <div className="banner-options">
+            <div className="banner-content">
+
+              
+
+              <div className="banner-item">
+                <h3>PDF to Text</h3>
+                <p>Extract text from your PDF files effortlessly.</p>
+                <button className="glow-on-hover">
+                  <Link to="/pdf-to-text" style={{ textDecoration: 'none', color: 'white' }}>Convert Now</Link>
+                </button>
+              </div>
+
+              <div className="banner-item">
+                <h3>PDF to JPG</h3>
+                <p>Convert your PDF documents into high-quality images.</p>
+                <button className="glow-on-hover">
+                  <Link to="/pdf-to-jpg" style={{ textDecoration: 'none', color: 'white' }}>Convert Now</Link>
+                </button>
+              </div>
+              <div className="banner-item">
+                <h3>PDF to DOCX</h3>
+                <p>Turn your PDF files into editable Word documents.</p>
+                <button className="glow-on-hover">
+                  <Link to="/pdf-to-docx" style={{ textDecoration: 'none', color: 'white' }}>Convert Now</Link>
+                </button>
+              </div>
+              <div className="banner-item">
+                <h3>Ask AI About PDF</h3>
+                <p>Get quick answers to questions related to your PDFs using AI.</p>
+                <button className="glow-on-hover">
+                  <Link to="/ask-ai" style={{ textDecoration: 'none', color: 'white' }}>Ask AI</Link>
+                </button>
+              </div>
+            </div>
+
+            <div className='video-section'>
+                <div >
+                  <video src={Video} autoPlay loop muted playsInline height="auto" />
+                </div>
+                <h2 style={{color:'rgb(200, 300, 300)', fontSize:'2rem', fontWeight:'bold', textAlign:'center', marginTop:'1rem'}}>Preview</h2>
+              </div>
+
+            
+
+          </div>
+          
+
+        
+
+            {/* <button className="glow-on-hover" onClick={handleClearFile}>Clear File</button> */}
+          
+      </div>
 
       <main className="home-content">
         <section className="features">

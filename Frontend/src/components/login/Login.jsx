@@ -14,7 +14,9 @@ function Login() {
     navigate('/register');
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault(); // Prevent form submission
+
     try {
       const response = await axios.post('http://localhost:5000/login', {
         email,
@@ -22,10 +24,10 @@ function Login() {
       });
 
       if (response.status === 200) {
-        console.log("succesfully login")
-        navigate('/summarize');
+        console.log("Successfully logged in");
+        navigate('/summarize'); // Redirect to the summarize page
       } else {
-        setError(response.data);
+        setError(response.data.error); // Update with specific error message
       }
     } catch (err) {
       setError('An error occurred during login. Please try again.');
@@ -39,32 +41,36 @@ function Login() {
         <div className="form-content">
           <h2>Login</h2>
           {error && <p className="error-message">{error}</p>}
-          <div className="input-group">
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className="input-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <div className="btns">
-            <button className="btn" type="button" onSubmit={handleLogin}>
-              Login
-            </button>
-            <button className="btn" onClick={handleRegisterClick}>
-              Register
-            </button>
-          </div>
+          <form onSubmit={handleLogin}>
+            <div className="input-group">
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required // Optional: Add required attribute
+              />
+            </div>
+            <div className="input-group">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required // Optional: Add required attribute
+              />
+            </div>
+            <div className="btns">
+              <button className="btn" type="submit">
+                Login
+              </button>
+              <button className="btn" type="button" onClick={handleRegisterClick}>
+                Register
+              </button>
+            </div>
+          </form>
           <div className="social-login">
             <p>Or login with:</p>
             <FaGoogle size={30} />

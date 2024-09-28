@@ -14,6 +14,7 @@ function Register() {
   const handleRegister = async (event) => {
     event.preventDefault(); // Prevents the default form submission behavior
 
+    // Check if passwords match
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
@@ -28,13 +29,14 @@ function Register() {
       });
 
       // Handle successful registration
-      if (response.data.includes('registered successfully')) {
-        navigate('/login');
+      if (response.status === 201) {
+        console.log("Registered successfully");
+        navigate('/login'); // Redirect to login page
       } else {
-        setError(response.data);
+        setError(response.data.error || 'Registration failed. Please try again.');
       }
     } catch (err) {
-      setError('An error occurred during registration. Please try again.');
+      setError(err.response?.data?.error || 'An error occurred during registration. Please try again.');
       console.error(err);
     }
   };
@@ -53,6 +55,7 @@ function Register() {
                 placeholder="Enter your username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                required // Optional: Add required attribute
               />
             </div>
             <div className="input-group">
@@ -62,6 +65,7 @@ function Register() {
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required // Optional: Add required attribute
               />
             </div>
             <div className="input-group">
@@ -71,6 +75,7 @@ function Register() {
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required // Optional: Add required attribute
               />
             </div>
             <div className="input-group">
@@ -80,6 +85,7 @@ function Register() {
                 placeholder="Confirm your password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                required // Optional: Add required attribute
               />
             </div>
             <div className="btns">

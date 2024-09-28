@@ -1,76 +1,183 @@
 .summarize-container {
-    height: 100vh;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0;
-    margin: 0;
-    background-color: rgb(1, 19, 22);
+    flex-direction: column;
+    min-height: 100vh;
+    color: white;
+    background-image: linear-gradient(to right,rgb(229, 124, 124) ,rgb(126, 126, 234));
 }
 
-.summarize-content {
-    width: 80%;
-    max-width: 800px;
-    padding: 30px;
-    background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+.summarize-header {
+    min-height: 90vh;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+}
+
+
+
+.summerize-hero-banner {
+    margin-top: 50px;
+    padding: 50px 20px;
+    border-radius: 10px;
+    text-align: center;
+    background-color: rgb(1, 19, 22, 0.8);
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+}
+
+.hero-banner h2 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.hero-banner p {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+}
+
+.summerize-drag_drop {
+    padding: 1rem;
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.summerize-drag_drop div {
+    background-color: rgba(67, 67, 96, 0.8);
+    width: 190px;
+    padding: 8px;
+    border-radius: 5px;
+
+    margin: auto;
+    font-size: 20px;
+    cursor: pointer;
+
+}
+
+.summerize-drag_drop input {
+    width: 250px;
+    margin: auto;
+}
+
+
+
+
+.summarize-footer {
+    position: relative;
+    bottom: 0;
+    padding: 20px;
+    background-color: rgb(1, 19, 22);
     text-align: center;
 }
 
-h2 {
-    margin-bottom: 20px;
-    font-size: 2rem;
-    color: #007bff;
+.summarize-footer p {
+    margin-bottom: 10px;
 }
 
-.input-group {
-    margin-bottom: 20px;
+.footer-link {
+    color: #00bcd4;
+    text-decoration: none;
+}
+
+.footer-link:hover {
+    text-decoration: underline;
+}
+
+.extracted-text-section {
+    background-color: rgb(0, 0, 0, 0.5);
+    color: rgb(244, 241, 241);
+    overflow-y: scroll;
+    max-height: 600px;
+    width: 80%;
+    margin: auto;
+    padding: 2rem;
+
+    line-height: 1.2rem;
     text-align: left;
+    border-radius: 1rem;
 }
 
-.input-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #333;
+.extracted-text-section::-webkit-scrollbar {
+    display: none;
 }
 
-input[type="file"] {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 1rem;
-}
-
-.summarize-btn {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    background-color: #007bff;
-    color: white;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.summarize-btn:hover {
-    background-color: #0056b3;
-}
-
-.summary-output {
-    margin-top: 20px;
-    text-align: left;
-}
-
-.summary-output h3 {
+.extracted-text-section h3 {
+    text-align: center;
+    margin: 10px;
     font-size: 1.5rem;
-    color: #007bff;
+    color: #e56186;
 }
 
-.summary-output p {
+.extracted-text-section pre {
+    font-size: 0.9rem;
+}
+
+.loading {
+    color: #252121;
+    width: 60px;
+    height: 60px;
+    margin: auto;
+    border-radius: 50%;
+    border: 10px solid #252121;
+    border-top: 5px solid #ffffff;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.ask-ai {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    width: 80%;
+    max-width: 600px;
+}
+.ask-ai {
+    position: relative;
+}
+
+
+
+
+
+.ask-ai input {
+    flex-grow: 1;
+    padding: 17px 15px;
     font-size: 1rem;
-    color: #333;
+    border: none;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    outline: none;
+}
+
+.ask-ai input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.ask-ai svg {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+}
+
+.ask-ai svg:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.ask-ai svg path {
+    fill: #ffffff;
 }
