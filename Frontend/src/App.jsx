@@ -4,6 +4,7 @@ import Login from './components/login/Login.jsx';
 import Register from './components/register/Register.jsx';
 import Summarize from './components/Summerize/Summerize.jsx';
 import Home from './components/Home/Home.jsx';
+import Pdftojpg from './components/pdftojpg/Pdftojpg.jsx';
 function App() {
   return (
     <BrowserRouter>
@@ -12,6 +13,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/pdf-to-text" element={<Summarize />} />
+        <Route path="/pdf-to-jpg" element={<Pdftojpg/>} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,0 +1,16 @@
+.extracted-images-section{
+    padding: 2rem;
+}
+.image-grid{
+    padding:2rem;
+    display: grid;
+        grid-template-columns: repeat(3, 1fr);
+
+}
+.image-item{
+    padding: 2rem;
+
+}
+.image-item img{
+    width: 350px;
+}
