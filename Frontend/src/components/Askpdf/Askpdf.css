@@ -1,0 +1,46 @@
+.chat{
+    /* border: 4px solid #d50000; */
+    padding: 1rem;
+    max-width: 80%;
+    margin:auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chat-container{
+    /* border: 4px solid #d50000; */
+    width: 80%;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    align-items: center;
+}
+.chat-container textarea{
+    width: 100%;
+    height: 1000;
+    padding: 1rem;
+    border-radius: 1rem;
+    background-color: rgba(1, 21, 30, 0.5);
+    color: white;
+
+}
+textarea::-webkit-scrollbar {
+    display: none;
+    /* Hides the scrollbar */
+}
+
+.input-div{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-div input{
+    width: 100%;
+    padding: 0.9rem;
+    
+}
