@@ -1,15 +1,25 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom'; // Import useLocation
 import * as pdfjsLib from 'pdfjs-dist/build/pdf'; // Import PDF.js for processing PDFs
 import 'pdfjs-dist/build/pdf.worker.entry'; // Import PDF.js worker for multi-threading
-import './Pdftojpg.css'
+import './Pdftojpg.css';
+
 function Pdftojpg() {
   const navigate = useNavigate();
+  const location = useLocation(); // Use useLocation to access state
   const [pdfFile, setPdfFile] = useState(null);
-  const [device, setDevice] = useState(false); 
+  const [device, setDevice] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');        
-  const [images, setImages] = useState([]); 
+  const [error, setError] = useState('');
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    // Check if there's a file passed from the previous component
+    if (location.state && location.state.file) {
+      setPdfFile(location.state.file); // Set the PDF file from state
+    }
+  }, [location.state]);
+
   const handlePdfUpload = (e) => {
     const file = e.target.files[0];
     if (file && file.type === 'application/pdf') {
@@ -39,7 +49,7 @@ function Pdftojpg() {
         const newImages = [];
         for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
           const page = await pdf.getPage(pageNum);
-          const viewport = page.getViewport({ scale: 1 }); 
+          const viewport = page.getViewport({ scale: 1 });
           const canvas = document.createElement('canvas');
           const context = canvas.getContext('2d');
 
@@ -92,7 +102,7 @@ function Pdftojpg() {
             <p>or drag and drop here</p>
           </div>
 
-          {loading && <div className="loading"><p></p></div>}
+          {loading && <div className="loading"><p>Converting...</p></div>}
           {error && <p className="error-message">{error}</p>}
 
           {!loading && pdfFile && !images.length && (

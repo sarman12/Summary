@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
+import { useLocation } from 'react-router-dom'; // Import useLocation
 import './Askpdf.css'; // Ensure this file exists for styling
 import run from '../config/gemini'; // Adjust the path as needed
 
 function Askpdf() {
+  const location = useLocation(); // Use useLocation to access state
   const [pdfFile, setPdfFile] = useState(null);
   const [extractedText, setExtractedText] = useState('');
   const [input, setInput] = useState(''); // Store user query
@@ -14,19 +16,13 @@ function Askpdf() {
 
   useEffect(() => {
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
-  }, []);
 
-  const handlePdfUpload = (e) => {
-    const file = e.target.files[0];
-    if (file && file.type === 'application/pdf') {
-      setPdfFile(file);
-      setExtractedText('');
-      setError('');
-      handleExtractText(file); // Automatically extract text after upload
-    } else {
-      alert('Please upload a valid PDF file.');
+    // Check if there's a file passed from the previous component
+    if (location.state && location.state.file) {
+      setPdfFile(location.state.file); // Set the PDF file from state
+      handleExtractText(location.state.file); // Extract text from the PDF file
     }
-  };
+  }, [location.state]);
 
   const extractText = async (url) => {
     setLoading(true);

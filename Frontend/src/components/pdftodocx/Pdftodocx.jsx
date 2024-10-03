@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom'; // Import useLocation
 import './Pdftodocx.css';
 // Import environment variables for API keys
 import ConvertAPI from 'convertapi';
 
 function Pdftodocx() {
+  const location = useLocation(); // Use useLocation to access state
   const [pdfFile, setPdfFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [downloadUrl, setDownloadUrl] = useState('');
+
+  useEffect(() => {
+    // Check if there's a file passed from the previous component
+    if (location.state && location.state.file) {
+      setPdfFile(location.state.file); // Set the PDF file from state
+    }
+  }, [location.state]);
 
   const handlePdfUpload = (e) => {
     const file = e.target.files[0];
@@ -37,8 +46,7 @@ function Pdftodocx() {
         formData,
         {
           headers: {
-            'x-api-key': 
-            "182423189", // Use environment variable
+            'x-api-key': "182423189", // Use environment variable
             'Content-Type': 'multipart/form-data',
           },
         }
