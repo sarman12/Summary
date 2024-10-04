@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
-import { useLocation } from 'react-router-dom'; // Import useLocation
 import './Askpdf.css'; // Ensure this file exists for styling
 import run from '../config/gemini'; // Adjust the path as needed
 
-function Askpdf() {
-  const location = useLocation(); // Use useLocation to access state
-  const [pdfFile, setPdfFile] = useState(null);
+function Askpdf({ file }) { // Accept file as a prop
   const [extractedText, setExtractedText] = useState('');
   const [input, setInput] = useState(''); // Store user query
-  const [device, setDevice] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [aiResponse, setAiResponse] = useState(''); // Store AI response
@@ -17,12 +13,12 @@ function Askpdf() {
   useEffect(() => {
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
-    // Check if there's a file passed from the previous component
-    if (location.state && location.state.file) {
-      setPdfFile(location.state.file); // Set the PDF file from state
-      handleExtractText(location.state.file); // Extract text from the PDF file
+    if (file) {
+      handleExtractText(file); // Extract text from the PDF file
+    } else {
+      setError('No PDF file provided. Please upload a file.');
     }
-  }, [location.state]);
+  }, [file]);
 
   const extractText = async (url) => {
     setLoading(true);
@@ -65,6 +61,7 @@ function Askpdf() {
       return;
     }
     setLoading(true);
+    setAiResponse(''); // Clear previous response
     try {
       const aiResult = await run(input); // Send user input to the AI
       setAiResponse(aiResult); // Update AI response state
@@ -76,6 +73,12 @@ function Askpdf() {
     }
   };
 
+  const handleClear = () => {
+    setExtractedText('');
+    setInput('');
+    setAiResponse('');
+  };
+
   return (
     <div className="summarize-container">
       <header className="summarize-header">
@@ -83,25 +86,10 @@ function Askpdf() {
         <p>Upload your PDF and get a concise summary using cutting-edge technology.</p>
 
         <div className="summerize-hero-banner">
-          <div className="summerize-drag_drop">
-            {device ? (
-              <input
-                type="file"
-                className="file-input"
-                accept="application/pdf"
-                onChange={handlePdfUpload}
-                aria-label="Upload PDF file"
-              />
-            ) : (
-              <div className="select-device" onClick={() => setDevice(true)} aria-label="Select PDF file from device">
-                Select from Device
-              </div>
-            )}
-            <div>Google Drive</div>
-            <p>or drag and drop here</p>
-          </div>
+          {loading && <div className="loading"><p>Extracting text...</p></div>}
+          {error && <p className="error">{error}</p>}
 
-          {pdfFile && (
+          {extractedText && (
             <div className="chat">
               <div className="chat-container">
                 <textarea value={extractedText} cols="90" rows="20" readOnly></textarea>
@@ -120,15 +108,9 @@ function Askpdf() {
             </div>
           )}
 
-          {pdfFile && (
-            <button className="glow-on-hover" onClick={() => setPdfFile(null)}>
-              Clear PDF
-            </button>
-          )}
-        </div>
 
-        {error && <p className="error">{error}</p>}
-        {aiResponse && <p className="ai-response">{aiResponse}</p>}
+          {aiResponse && <p className="ai-response">{aiResponse}</p>}
+        </div>
       </header>
 
       <footer className="summarize-footer">

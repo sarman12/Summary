@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Home.css';
 import Video from '../../assets/video1.mp4';
@@ -6,12 +6,19 @@ import Video from '../../assets/video1.mp4';
 function Home() {
   const navigate = useNavigate();
   const [fileUploaded, setFileUploaded] = useState(false);
-  const [file, setFile] = useState(null); // State to hold the uploaded file
+  const [file, setFile] = useState(null);
   const [device, setDevice] = useState(false);
+  const [isLoggedIn, setLoggedIn] = useState(false);
 
+  useEffect(()=>{
+    const loggedIn = localStorage.getItem('isLoggedIn');
+    if(loggedIn){
+      setLoggedIn(true);
+    }
+  },[]);
   const handleFileChange = (e) => {
     if (e.target.files.length > 0) {
-      setFile(e.target.files[0]); // Store the uploaded file
+      setFile(e.target.files[0]);
       setFileUploaded(true);
     } else {
       setFileUploaded(false);
@@ -19,7 +26,12 @@ function Home() {
   };
 
   const handleNavigation = (path) => {
-    navigate(path, { state: { file } }); // Pass the file as state to the next route
+    if(isLoggedIn ==false){
+      navigate('/login');
+    }
+    else{
+      navigate(path, { state: { file } });
+    } 
   };
 
   return (

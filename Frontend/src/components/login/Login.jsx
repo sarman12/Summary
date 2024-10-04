@@ -15,8 +15,7 @@ function Login() {
   };
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // Prevent form submission
-
+    e.preventDefault(); 
     try {
       const response = await axios.post('http://localhost:5000/login', {
         email,
@@ -24,10 +23,10 @@ function Login() {
       });
 
       if (response.status === 200) {
-        console.log("Successfully logged in");
-        navigate('/summarize'); // Redirect to the summarize page
+        localStorage.setItem('token', response.data.token); // Save login token
+        navigate('/dashboard');
       } else {
-        setError(response.data.error); // Update with specific error message
+        setError(response.data.error);
       }
     } catch (err) {
       setError('An error occurred during login. Please try again.');

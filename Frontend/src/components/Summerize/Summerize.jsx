@@ -1,32 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
 import './Summarize.css';
 
-function Summarize() {
-  const navigate = useNavigate();
-  const [login, setLogin] = useState(false);
-  const [pdfFile, setPdfFile] = useState(null);
+function Summarize({ file }) { // Accept file as a prop
   const [extractedText, setExtractedText] = useState('');
   const [typedText, setTypedText] = useState('');
   const [device, setDevice] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [ai, setAI] = useState(false);
 
   useEffect(() => {
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
-  }, []);
+    
+    // If the file prop is passed, process the PDF immediately
+    if (file) {
+      setDevice(true);
+      handleExtractText(file);
+    }
+  }, [file]);
 
   const handlePdfUpload = (e) => {
-    const file = e.target.files[0];
-    if (file && file.type === 'application/pdf') {
-      setPdfFile(file);
+    const uploadedFile = e.target.files[0];
+    if (uploadedFile && uploadedFile.type === 'application/pdf') {
       setExtractedText('');
       setTypedText('');
       setError('');
+      handleExtractText(uploadedFile); // Automatically extract text on valid upload
     } else {
-      alert('Please upload a valid PDF file.');
+      setError('Please upload a valid PDF file.');
     }
   };
 
@@ -67,7 +68,7 @@ function Summarize() {
       .trim();
   };
 
-  const handleExtractText = () => {
+  const handleExtractText = (pdfFile) => {
     if (!pdfFile) {
       alert('Please upload a PDF file first.');
       return;
@@ -109,11 +110,8 @@ function Summarize() {
   const handleClearText = () => {
     setExtractedText('');
     setTypedText('');
-    setPdfFile(null);
     setDevice(false);
   };
-
- 
 
   return (
     <div className="summarize-container">
@@ -122,25 +120,9 @@ function Summarize() {
         <p>Upload your PDF and get a concise summary using cutting-edge AI technology.</p>
 
         <div className="summerize-hero-banner">
-          <div className="summerize-drag_drop">
-            {device ? (
-              <input
-                type="file"
-                className="file-input"
-                accept="application/pdf"
-                onChange={handlePdfUpload}
-                aria-label="Upload PDF file"
-              />
-            ) : (
-              <div className="select-device" onClick={() => setDevice(true)} aria-label="Select PDF file from device">
-                Select from Device
-              </div>
-            )}
-            <div>Google Drive</div>
-            <p>or drag and drop here</p>
-          </div>
+          
 
-          {loading && <div className="loading"><p></p></div>}
+          {loading && <div className="loading"><p>Extracting...</p></div>}
           {error && <p className="error-message">{error}</p>}
 
           {!loading && extractedText && (
@@ -153,28 +135,21 @@ function Summarize() {
           )}
 
           {!loading && !extractedText ? (
-            <button className="glow-on-hover" onClick={handleExtractText} disabled={loading}>
+            <button className="glow-on-hover" onClick={() => handleExtractText(pdfFile)} disabled={loading}>
               Extract Text
             </button>
           ) : (
             !loading && (
               <div style={{ display: 'flex', gap: '10px', margin: 'auto', justifyContent: 'center', marginTop: '20px' }}>
-                <button className="glow-on-hover" onClick={handleSaveTextAsFile} disabled={loading} type="button">
+                <button className='btn' onClick={handleSaveTextAsFile} disabled={loading} type="button">
                   Download
                 </button>
-                <button className="glow-on-hover" onClick={handleClearText} disabled={loading}>
-                  Clear Text
-                </button>
-                
               </div>
             )
           )}
         </div>
       </header>
 
-      <footer className="summarize-footer">
-        <p>© 2024 PDF Summarizer. All rights reserved.</p>
-      </footer>
     </div>
   );
 }

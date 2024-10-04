@@ -1,0 +1,131 @@
+
+.dashboard{
+    min-height: 100vh;
+}
+.head{
+    min-height: 80vh;
+}
+.profile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile h2 {
+    margin: auto;
+    color: #f7f2f2;
+}
+
+.profile-button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    /* border: none; */
+    outline: none;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+}
+
+.profile-button .fa {
+
+    font-size: 4rem;
+    color: #fff;
+
+}
+.profile-button:hover .fa {
+    /* background-color: #0000ff; */
+    color: black;
+}
+
+.profile-section {
+    position: fixed;
+    /* border: 2px solid red; */
+    /* top: 50%; */
+    background-color: #eeeef4;
+    right: 0;
+    padding: 40px;
+}
+
+.profile-section h2 {
+    margin-bottom: 15px;
+    color: #0000ff;
+}
+
+.profile-section h3 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.profile-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.profile-section ul li {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 1rem;
+    color: #555;
+}
+
+.close-profile {
+    margin-top: 20px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.close-profile:hover {
+    background-color: #ff3333;
+}
+.hero-banner{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: rgb(241, 235, 235);
+    margin-top: 20px;
+}
+
+.summerize-drag_drop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.dashboard-footer {
+    width: 100%;
+    height: 100px;
+
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    margin-top: 40px;
+    font-size: 0.9rem;
+}
+
+.dashboard-footer p {
+    margin: 5px 0;
+}
+
+.dashboard-footer a {
+    color: #f39c12;
+    text-decoration: none;
+}
+
+.dashboard-footer a:hover {
+    text-decoration: underline;
+}

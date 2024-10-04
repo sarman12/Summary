@@ -1,9 +1,9 @@
 .summarize-container {
     display: flex;
+    width: 100%;
     flex-direction: column;
     min-height: 100vh;
     color: white;
-    background-image: linear-gradient(to right,rgb(229, 124, 124) ,rgb(126, 126, 234));
 }
 
 .summarize-header {
@@ -87,8 +87,8 @@
     background-color: rgb(0, 0, 0, 0.5);
     color: rgb(244, 241, 241);
     overflow-y: scroll;
-    max-height: 600px;
-    width: 80%;
+    max-height: 500px;
+    width: 100%;
     margin: auto;
     padding: 2rem;
 
@@ -131,4 +131,10 @@
     100% {
         transform: rotate(360deg);
     }
+}
+
+.btn{
+    width: 200px;
+    margin: auto;
+    box-shadow: 0px 0px 10px rgba(7, 151, 234, 0.5);
 }

@@ -19,3 +19,6 @@ button:hover {
     box-shadow: 0 8px 25px rgba(0, 188, 212, 0.7);
     /* Enhanced shadow on hover */
 }
+body{
+    background-color: rgb(1, 19, 22);
+}

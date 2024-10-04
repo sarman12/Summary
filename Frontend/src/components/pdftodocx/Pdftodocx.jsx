@@ -1,39 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom'; // Import useLocation
 import './Pdftodocx.css';
-// Import environment variables for API keys
-import ConvertAPI from 'convertapi';
 
-function Pdftodocx() {
-  const location = useLocation(); // Use useLocation to access state
-  const [pdfFile, setPdfFile] = useState(null);
+function Pdftodocx({ file }) { // Accept file as a prop
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [downloadUrl, setDownloadUrl] = useState('');
 
   useEffect(() => {
-    // Check if there's a file passed from the previous component
-    if (location.state && location.state.file) {
-      setPdfFile(location.state.file); // Set the PDF file from state
+    // Trigger conversion if file is passed as a prop
+    if (file) {
+      handleConvertPdfToDocx(file);
     }
-  }, [location.state]);
+  }, [file]); // Dependency on file prop
 
-  const handlePdfUpload = (e) => {
-    const file = e.target.files[0];
-    if (file && file.type === 'application/pdf') {
-      setPdfFile(file);
-      setError(''); // Clear any previous error
-    } else {
-      setError('Please upload a valid PDF file.');
-    }
-  };
-
-  const handleConvertPdfToDocx = async () => {
+  const handleConvertPdfToDocx = async (pdfFile) => {
     if (!pdfFile) {
       setError('No PDF file selected.');
       return;
     }
+
     setLoading(true);
     setDownloadUrl('');
 
@@ -46,7 +32,7 @@ function Pdftodocx() {
         formData,
         {
           headers: {
-            'x-api-key': "182423189", // Use environment variable
+            'x-api-key': "182423189", // Use your actual API key here
             'Content-Type': 'multipart/form-data',
           },
         }
@@ -69,25 +55,11 @@ function Pdftodocx() {
     <div className="summarize-container">
       <header className="summarize-header">
         <h2>Convert PDF to DOCX</h2>
-        <p>Upload your PDF file and convert it to a DOCX format effortlessly!</p>
+        <p>Converting your PDF file to DOCX format...</p>
 
         <div className="summerize-hero-banner">
-          <div className="summerize-drag_drop">
-            <input
-              type="file"
-              className="file-input"
-              accept="application/pdf"
-              onChange={handlePdfUpload}
-              aria-label="Upload PDF file"
-            />
-            {loading && <div className="loading"><p>Converting...</p></div>}
-            {error && <p className="error-message">{error}</p>}
-            {!loading && (
-              <button className="glow-on-hover" onClick={handleConvertPdfToDocx} disabled={loading}>
-                Convert to DOCX
-              </button>
-            )}
-          </div>
+          {loading && <div className="loading"><p>Converting...</p></div>}
+          {error && <p className="error-message">{error}</p>}
         </div>
       </header>
 
@@ -97,10 +69,6 @@ function Pdftodocx() {
         </a>
       )}
 
-      <footer className="summarize-footer">
-        <p>© 2024 PDF Converter. All rights reserved.</p>
-        <a href="#" className="footer-link">Privacy Policy</a>
-      </footer>
     </div>
   );
 }

@@ -1,43 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom'; // Import useLocation
-import * as pdfjsLib from 'pdfjs-dist/build/pdf'; // Import PDF.js for processing PDFs
-import 'pdfjs-dist/build/pdf.worker.entry'; // Import PDF.js worker for multi-threading
+import { useNavigate } from 'react-router-dom';
+import * as pdfjsLib from 'pdfjs-dist/build/pdf';
+import 'pdfjs-dist/build/pdf.worker.entry';
 import './Pdftojpg.css';
 
-function Pdftojpg() {
+function Pdftojpg({ file }) {
   const navigate = useNavigate();
-  const location = useLocation(); // Use useLocation to access state
-  const [pdfFile, setPdfFile] = useState(null);
-  const [device, setDevice] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [images, setImages] = useState([]);
 
   useEffect(() => {
-    // Check if there's a file passed from the previous component
-    if (location.state && location.state.file) {
-      setPdfFile(location.state.file); // Set the PDF file from state
-    }
-  }, [location.state]);
-
-  const handlePdfUpload = (e) => {
-    const file = e.target.files[0];
-    if (file && file.type === 'application/pdf') {
-      setPdfFile(file);
-      setError('');
+    if (!file) {
+      navigate('/dashboard');
     } else {
-      alert('Please upload a valid PDF file.');
+      handleConvertPdfToJpg();
     }
-  };
+  }, [file, navigate]);
 
   const handleConvertPdfToJpg = async () => {
-    if (!pdfFile) return;
+    if (!file) return;
 
     setLoading(true);
     setImages([]);
 
     const reader = new FileReader();
-    reader.readAsArrayBuffer(pdfFile);
+    reader.readAsArrayBuffer(file);
 
     reader.onload = async function () {
       const pdfData = new Uint8Array(reader.result);
@@ -79,63 +67,31 @@ function Pdftojpg() {
   };
 
   return (
-    <div className="summarize-container">
-      <header className="summarize-header">
-        <h2>Convert Your PDFs to JPG</h2>
+    <div className="pdf-to-jpg-container">
+      <header className="pdf-header">
+        <h2 className="pdf-title">Convert Your PDFs to JPG</h2>
 
-        <div className="summerize-hero-banner">
-          <div className="summerize-drag_drop">
-            {device ? (
-              <input
-                type="file"
-                className="file-input"
-                accept="application/pdf"
-                onChange={handlePdfUpload}
-                aria-label="Upload PDF file"
-              />
-            ) : (
-              <div className="select-device" onClick={() => setDevice(true)} aria-label="Select PDF file from device">
-                Select from Device
-              </div>
-            )}
-            <div>Google Drive</div>
-            <p>or drag and drop here</p>
-          </div>
-
-          {loading && <div className="loading"><p>Converting...</p></div>}
+        <div className="pdf-hero-banner">
+          {loading && <div className="loading-indicator"><p></p></div>}
           {error && <p className="error-message">{error}</p>}
 
-          {!loading && pdfFile && !images.length && (
-            <button className="glow-on-hover" onClick={handleConvertPdfToJpg} disabled={loading}>
-              Convert to JPG
-            </button>
-          )}
-
           {!loading && images.length > 0 && (
-            <section className="extracted-images-section">
-              <h3>Converted JPGs:</h3>
+            <section className="image-conversion-section">
+              <h3 className="converted-title">Converted JPGs:</h3>
               <div className="image-grid">
                 {images.map((image, index) => (
                   <div key={index} className="image-item">
-                    <img src={image} alt={`Page ${index + 1}`} />
-                    <button style={{width:'200px'}} className='glow-on-hover' onClick={() => handleDownloadImage(image, index)}>Download JPG</button>
+                    <img src={image} alt={`Page ${index + 1}`} className="converted-image" />
+                    <button className="download-button glow-on-hover" onClick={() => handleDownloadImage(image, index)}>
+                      Download JPG
+                    </button>
                   </div>
                 ))}
               </div>
             </section>
           )}
-
-          {pdfFile && images.length > 0 && (
-            <button className="glow-on-hover" onClick={() => setImages([])}>
-              Clear Images
-            </button>
-          )}
         </div>
       </header>
-
-      <footer className="summarize-footer">
-        <p>© 2024 PDF to JPG Converter. All rights reserved.</p>
-      </footer>
     </div>
   );
 }
