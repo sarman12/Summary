@@ -83,7 +83,8 @@ function Dashboard() {
   };
 
   return (
-    <div className="dashboard">
+    <div className={`dashboard ${showProfile ? 'shift-left' : ''}`}>
+      <div className="content">
         <section className="head">
             <div className="profile">
                 <h2>Welcome to the dashboard {userName}</h2>
@@ -91,22 +92,6 @@ function Dashboard() {
                 <BiUser className="fa" />
                 </button>
             </div>
-
-            {showProfile && (
-                <div className="profile-section">
-                <h2>{userName}'s Profile</h2>
-                <h3>Uploaded History:</h3>
-                <ul>
-                    {uploadedHistory.map((file, index) => (
-                    <li key={index}>
-                        {file.fileName} - {file.date}
-                    </li>
-                    ))}
-                </ul>
-                <button onClick={toggleProfile} className="close-profile">Close</button>
-                <button onClick={() => navigate('/register')} className="close-profile">Log Out</button>
-                </div>
-            )}
 
             <div className="hero-banner">
             <h2>Upload Your Pdf</h2>
@@ -174,7 +159,24 @@ function Dashboard() {
             </div>
         </section>
 
-      {/* Footer */}
+        {showProfile && (
+                <div className="profile-section">
+                <h2>{userName}'s Profile</h2>
+                <h3>Uploaded History:</h3>
+                <ul>
+                    {uploadedHistory.map((file, index) => (
+                    <li key={index}>
+                        {file.fileName} - {file.date}
+                    </li>
+                    ))} 
+                </ul>
+                <button onClick={toggleProfile} className="close-profile">Close</button>
+                <button onClick={() => navigate('/register')} className="close-profile">Log Out</button>
+                </div>
+            )}
+
+      </div>
+
       <footer className="dashboard-footer">
         <p>&copy; {new Date().getFullYear()} PDF Tools. All rights reserved.</p>
         <p>

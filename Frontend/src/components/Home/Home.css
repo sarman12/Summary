@@ -3,7 +3,6 @@
     flex-direction: column;
     min-height: 100vh;
     color: white;
-    
 }
 
 .home-header {
@@ -58,101 +57,6 @@
     margin-bottom: 30px;
 }
 
-.banner-options {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1.5rem;
-    padding: 2rem;
-    border-radius: 10px;
-}
-
-.banner-content {
-    width: 100%;
-    /* border: 1px solid white; */
-    display: flex;
-    gap: 2rem;
-    padding: 1rem;
-}
-
-@keyframes popUp {
-    0% {
-        transform: translateY(-50px);
-        opacity: 0;
-    }
-
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.banner-item {
-    display: flex;
-    background-color: rgba(220, 229, 231, 0.1);
-    color: white;
-    min-width: 200px;
-    max-width: 300px;
-    padding: 1rem;
-    border-radius: 12px;
-    text-align: center;
-    box-shadow: 0px 4px 15px rgba(4, 74, 98, 0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    flex-direction: column;
-    opacity: 0;
-    animation: popUp 0.6s ease forwards;
-}
-
-.banner-item:nth-child(1) {
-    animation-delay: 0.1s;
-}
-
-.banner-item:nth-child(2) {
-    animation-delay: 0.3s;
-}
-
-.banner-item:nth-child(3) {
-    animation-delay: 0.5s;
-}
-
-.banner-item:nth-child(4) {
-    animation-delay: 0.7s;
-}
-
-.banner-item h3 {
-    font-size: 1.2rem;
-    /* Slightly larger for better visibility */
-    color: #c5ecf1;
-    margin: 0.5rem 0;
-    /* Added margin */
-}
-
-.banner-item p {
-    font-size: 0.9rem;
-    color: #d1d5db;
-    margin: 0.5rem 0;
-}
-
-.banner-item:hover {
-    transform: scale(1.05);
-    box-shadow: 0px 6px 20px rgba(4, 74, 98, 0.5);
-}
-
-@media (max-width: 768px) {
-    .banner-options {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .banner-item {
-        width: 100%;
-    }
-
-    .hero-banner {
-        padding: 30px 10px;
-        /* Adjusted padding for smaller screens */
-    }
-}
 
 .home-content {
     padding: 50px 20px;
@@ -185,7 +89,6 @@
     font-size: 1.8rem;
     margin-bottom: 15px;
     color: #c5ecf1;
-    /* Consistent color with the logo */
 }
 
 .feature-item p {
@@ -214,11 +117,9 @@
 .footer-link:hover {
     text-decoration: underline;
     color: #ffffff;
-    /* Change color on hover for better visibility */
 }
 
 .how-it-works {
-    /* background-color: rgb(1, 19, 22, 0.8); */
     padding: 50px 20px;
     text-align: center;
     border-radius: 10px;
@@ -252,11 +153,8 @@
     background-color: rgba(220, 229, 231, 0.1);
     border-radius: 5px;
     width: 80%;
-    /* Adjust the width as needed */
     max-width: 600px;
-    /* Optional: Set a max width */
     text-align: left;
-    /* Align text to the left */
 }
 
 .tutorial-video {
@@ -265,7 +163,8 @@
     border-radius: 10px;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
 }
-button{
+
+button {
     width: 100%;
     margin-top: 1rem;
     color: white;
@@ -273,8 +172,25 @@ button{
     border: 1px rgb(245, 240, 240) solid;
     cursor: pointer;
 }
-button:hover{
+
+button:hover {
     background-color: rgb(251, 249, 249);
     color: black;
-    border:none;
+    border: none;
+}
+
+.get-started-button {
+    margin-top: 20px;
+    padding: 12px 24px;
+    width: 200px;
+    background-color: #d4e3d4;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.get-started-button:hover {
+    background-color: #b7efba;
 }
