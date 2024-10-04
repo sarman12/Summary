@@ -59,12 +59,40 @@ function Pdftojpg({ file }) {
     };
   };
 
-  const handleDownloadImage = (image, index) => {
+  const handleDownloadImage = async (image, index) => {
     const link = document.createElement('a');
     link.href = image;
     link.download = `page-${index + 1}.jpg`;
     link.click();
-  };
+
+    // Send file details to the backend to save
+    const fileName = `page-${index + 1}.jpg`;
+
+    try {
+        const response = await fetch('http://localhost:5000/saveFile', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: localStorage.getItem('username'), // Assuming username is stored in localStorage
+                fileName,
+                fileContent: image, // Optionally store base64 image content
+            }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log('File saved successfully:', data.message);
+        } else {
+            console.error('Error saving file:', data.error);
+        }
+    } catch (error) {
+        console.error('Error in file save request:', error);
+    }
+};
+
 
   return (
     <div className="pdf-to-jpg-container">

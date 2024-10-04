@@ -15,16 +15,17 @@ function Login() {
   };
 
   const handleLogin = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/login', {
-        email,
-        password,
-      });
+      const response = await axios.post('http://localhost:5000/login', { email, password });
 
       if (response.status === 200) {
-        localStorage.setItem('token', response.data.token); // Save login token
-        navigate('/dashboard');
+        const { username, uploadedFiles } = response.data;
+
+        // Save username and uploaded files to localStorage
+        localStorage.setItem('username', username); 
+        localStorage.setItem('uploadedFiles', JSON.stringify(uploadedFiles)); 
+        navigate('/dashboard');  // Navigate to dashboard, no need to pass state
       } else {
         setError(response.data.error);
       }

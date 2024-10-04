@@ -12,34 +12,33 @@ function Register() {
   const [error, setError] = useState('');
 
   const handleRegister = async (event) => {
-    event.preventDefault(); // Prevents the default form submission behavior
+      event.preventDefault();
 
-    // Check if passwords match
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
-
-    try {
-      // Send a POST request to the backend /register endpoint
-      const response = await axios.post('http://localhost:5000/register', {
-        username,
-        email,
-        password,
-      });
-
-      // Handle successful registration
-      if (response.status === 201) {
-        console.log("Registered successfully");
-        navigate('/login'); // Redirect to login page
-      } else {
-        setError(response.data.error || 'Registration failed. Please try again.');
+      if (password !== confirmPassword) {
+          setError('Passwords do not match');
+          return;
       }
-    } catch (err) {
-      setError(err.response?.data?.error || 'An error occurred during registration. Please try again.');
-      console.error(err);
-    }
+
+      try {
+          const response = await axios.post('http://localhost:5000/register', {
+             
+              username,
+              email,
+              password,
+          });
+
+          if (response.status === 201) {
+              console.log("Registered successfully");
+              navigate('/login');
+          } else {
+              setError(response.data.error || 'Registration failed. Please try again.');
+          }
+      } catch (err) {
+          setError(err.response?.data?.error || 'An error occurred during registration. Please try again.');
+          console.error(err);
+      }
   };
+
 
   return (
     <div className="login-container">
