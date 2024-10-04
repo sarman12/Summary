@@ -9,7 +9,6 @@ import './Dashboard.css';
 
 function Dashboard() {
   const navigate = useNavigate();
-
   const [file, setFile] = useState(null);
   const [device, setDevice] = useState(false);
   const [fileUploaded, setFileUploaded] = useState(false);
@@ -20,11 +19,27 @@ function Dashboard() {
 
   useEffect(() => {
     const storedUserName = localStorage.getItem('username') || 'Guest';
+    console.log('Stored Username:', storedUserName); // Debug log
     setUserName(storedUserName);
 
-    const savedHistory = JSON.parse(localStorage.getItem('uploadedHistory')) || [];
-    setUploadedHistory(savedHistory);
-  }, []);
+    if (storedUserName !== 'Guest') {
+        fetch(`/user/${storedUserName}`)
+            .then(response => {
+                console.log('Response:', response); // Log the response to inspect it
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json(); // Attempt to parse as JSON
+            })
+            .then(data => {
+                if (data.uploadedFiles) {
+                    setUploadedHistory(data.uploadedFiles);
+                }
+            })
+            .catch(err => console.error('Error fetching user history:', err));
+    }
+}, []);
+
 
   const handleFileChange = (e) => {
     if (e.target.files.length > 0) {
@@ -37,14 +52,45 @@ function Dashboard() {
     }
   };
 
+  const saveToHistory = (fileName) => {
+    const newFile = { fileName, fileContent: '' }; // For now, just passing an empty fileContent
+    fetch('http://localhost:5000/saveFile', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            username: userName,  // Ensure userName is defined
+            fileName,
+            fileContent: newFile.fileContent,
+        }),
+    })
+    .then(response => {
+        console.log('Response:', response); // Log the response
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Data:', data); // Log the data returned from the server
+        if (data.message === 'File saved successfully') {
+        const newEntry = { fileName, date: new Date().toISOString().split('T')[0] };
+        setUploadedHistory(prevHistory => {
+            const updatedHistory = [...prevHistory, newEntry];
+            console.log('Updated History:', updatedHistory); // Debug log
+            return updatedHistory;
+        });
+    }
+
+    })
+    .catch(err => console.error('Error saving file:', err));
+};
+
+
+
   const selectTool = (tool) => {
     setCurrentTool(tool);
-  };
-
-  const saveToHistory = (fileName) => {
-    const newHistory = [...uploadedHistory, { fileName, date: new Date().toISOString().split('T')[0] }];
-    setUploadedHistory(newHistory);
-    localStorage.setItem('uploadedHistory', JSON.stringify(newHistory));
   };
 
   const toggleProfile = () => {
@@ -56,7 +102,7 @@ function Dashboard() {
       <div className="content">
         <section className="head">
           <div className="profile">
-            <h2>Welcome to the dashboard {userName}</h2>
+            <h2>Welcome to the dashboard, {userName}</h2>
             <button onClick={toggleProfile} className="profile-button">
               <BiUser className="fa" />
             </button>
@@ -133,7 +179,6 @@ function Dashboard() {
             <button onClick={() => navigate('/register')} className="close-profile">Log Out</button>
           </div>
         )}
-
       </div>
 
       <footer className="dashboard-footer">
