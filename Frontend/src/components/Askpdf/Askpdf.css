@@ -1,5 +1,4 @@
 .chat{
-    /* border: 4px solid #d50000; */
     padding: 1rem;
     max-width: 80%;
     margin:auto;
@@ -9,7 +8,6 @@
 }
 
 .chat-container{
-    /* border: 4px solid #d50000; */
     width: 80%;
     padding: 1rem;
     display: flex;

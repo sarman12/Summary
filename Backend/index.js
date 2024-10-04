@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt'); 
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken'); // Import jsonwebtoken
 const app = express();
 
 mongoose.connect('mongodb://localhost:27017/usersDB')
@@ -25,6 +26,8 @@ const UserSchema = new mongoose.Schema({
 });
 
 const User = mongoose.model('User', UserSchema);
+
+const JWT_SECRET = 'your_jwt_secret'; // Replace with a secure secret key
 
 // Registration
 app.post('/register', async (req, res) => {
@@ -57,7 +60,9 @@ app.post('/login', async (req, res) => {
     try {
         const user = await User.findOne({ email });
         if (user && await bcrypt.compare(password, user.password)) { // Compare hashed password
-            res.status(200).json({ message: 'Login successful', username: user.username, uploadedFiles: user.uploadedFiles });
+            // Create a token valid for 30 minutes
+            const token = jwt.sign({ id: user._id, username: user.username }, JWT_SECRET, { expiresIn: '30m' });
+            res.status(200).json({ message: 'Login successful', token, username: user.username, uploadedFiles: user.uploadedFiles });
         } else {
             res.status(401).json({ error: 'Invalid credentials' });
         }
@@ -66,7 +71,23 @@ app.post('/login', async (req, res) => {
     }
 });
 
-app.get('/user/:username', async (req, res) => {
+// Middleware to authenticate JWT
+const authenticateJWT = (req, res, next) => {
+    const token = req.headers['authorization']?.split(' ')[1]; // Extract token from Authorization header
+    if (token) {
+        jwt.verify(token, JWT_SECRET, (err, user) => {
+            if (err) {
+                return res.sendStatus(403); // Forbidden
+            }
+            req.user = user;
+            next();
+        });
+    } else {
+        res.sendStatus(401); // Unauthorized
+    }
+};
+
+app.get('/user/:username', authenticateJWT, async (req, res) => {
     const { username } = req.params;
     try {
         const user = await User.findOne({ username });
@@ -80,16 +101,15 @@ app.get('/user/:username', async (req, res) => {
     }
 });
 
+app.post('/saveFile', authenticateJWT, async (req, res) => {
+    const { fileName } = req.body; // Only receive fileName
 
-app.post('/saveFile', async (req, res) => {
-    const { username, fileName } = req.body; // Only receive username and fileName
-
-    if (!username || !fileName) {
-        return res.status(400).json({ error: 'Username and file name are required' });
+    if (!fileName) {
+        return res.status(400).json({ error: 'File name is required' });
     }
 
     try {
-        const user = await User.findOne({ username });
+        const user = await User.findById(req.user.id);
         if (user) {
             user.uploadedFiles.push({ fileName }); // Only push the file name
             await user.save();
@@ -102,8 +122,6 @@ app.post('/saveFile', async (req, res) => {
         res.status(500).json({ error: 'Error saving file name' });
     }
 });
-
-
 
 const port = process.env.PORT || 5000; // Use environment variable for port
 app.listen(port, () => {

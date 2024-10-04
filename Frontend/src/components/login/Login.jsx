@@ -21,11 +21,9 @@ function Login() {
 
       if (response.status === 200) {
         const { username, uploadedFiles } = response.data;
-
-        // Save username and uploaded files to localStorage
         localStorage.setItem('username', username); 
         localStorage.setItem('uploadedFiles', JSON.stringify(uploadedFiles)); 
-        navigate('/dashboard');  // Navigate to dashboard, no need to pass state
+        navigate('/dashboard');  
       } else {
         setError(response.data.error);
       }

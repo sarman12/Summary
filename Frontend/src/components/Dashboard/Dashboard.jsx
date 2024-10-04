@@ -16,6 +16,7 @@ function Dashboard() {
   const [showProfile, setShowProfile] = useState(false);
   const [uploadedHistory, setUploadedHistory] = useState([]);
   const [userName, setUserName] = useState('Guest');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const storedUserName = localStorage.getItem('username') || 'Guest';
@@ -23,23 +24,22 @@ function Dashboard() {
     setUserName(storedUserName);
 
     if (storedUserName !== 'Guest') {
-        fetch(`/user/${storedUserName}`)
-            .then(response => {
-                console.log('Response:', response); // Log the response to inspect it
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json(); // Attempt to parse as JSON
-            })
-            .then(data => {
-                if (data.uploadedFiles) {
-                    setUploadedHistory(data.uploadedFiles);
-                }
-            })
-            .catch(err => console.error('Error fetching user history:', err));
+      fetch(`/user/${storedUserName}`)
+        .then(response => {
+          console.log('Response:', response); // Log the response to inspect it
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json(); // Attempt to parse as JSON
+        })
+        .then(data => {
+          if (data.uploadedFiles) {
+            setUploadedHistory(data.uploadedFiles);
+          }
+        })
+        .catch(err => console.error('Error fetching user history:', err));
     }
-}, []);
-
+  }, []);
 
   const handleFileChange = (e) => {
     if (e.target.files.length > 0) {
@@ -53,48 +53,51 @@ function Dashboard() {
   };
 
   const saveToHistory = (fileName) => {
-    const newFile = { fileName, fileContent: '' }; // For now, just passing an empty fileContent
+    const newFile = { fileName, fileContent: '' };
     fetch('http://localhost:5000/saveFile', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            username: userName,  // Ensure userName is defined
-            fileName,
-            fileContent: newFile.fileContent,
-        }),
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: userName,
+        fileName,
+        fileContent: newFile.fileContent,
+      }),
     })
-    .then(response => {
-        console.log('Response:', response); // Log the response
+      .then(response => {
+        console.log('Response:', response); 
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
         return response.json();
-    })
-    .then(data => {
-        console.log('Data:', data); // Log the data returned from the server
+      })
+      .then(data => {
+        console.log('Data:', data);
         if (data.message === 'File saved successfully') {
-        const newEntry = { fileName, date: new Date().toISOString().split('T')[0] };
-        setUploadedHistory(prevHistory => {
+          const newEntry = { fileName, date: new Date().toISOString().split('T')[0] };
+          setUploadedHistory(prevHistory => {
             const updatedHistory = [...prevHistory, newEntry];
             console.log('Updated History:', updatedHistory); // Debug log
             return updatedHistory;
-        });
-    }
-
-    })
-    .catch(err => console.error('Error saving file:', err));
-};
-
-
-
-  const selectTool = (tool) => {
-    setCurrentTool(tool);
+          });
+        }
+      })
+      .catch(err => console.error('Error saving file:', err));
   };
+
+  
 
   const toggleProfile = () => {
     setShowProfile(!showProfile);
+  };
+
+  const handleToolSelect = (tool) => {
+    setLoading(true);
+    setCurrentTool(tool);
+    setTimeout(() => {
+      setLoading(false); 
+    }, 5000); 
   };
 
   return (
@@ -135,32 +138,37 @@ function Dashboard() {
                   <div className="banner-item">
                     <h3>PDF to Text</h3>
                     <p>Extract text from your PDF files effortlessly.</p>
-                    <button className="glow-on-hover" onClick={() => selectTool('pdftotxt')}>Convert Now</button>
+                    <button className="glow-on-hover" onClick={() => handleToolSelect('pdftotxt')}>Convert Now</button>
                   </div>
                   <div className="banner-item">
                     <h3>PDF to JPG</h3>
                     <p>Convert your PDF documents into high-quality images.</p>
-                    <button className="glow-on-hover" onClick={() => selectTool('pdftojpg')}>Convert Now</button>
+                    <button className="glow-on-hover" onClick={() => handleToolSelect('pdftojpg')}>Convert Now</button>
                   </div>
                   <div className="banner-item">
                     <h3>PDF to DOCX</h3>
                     <p>Convert your PDF documents into editable DOCX files.</p>
-                    <button className="glow-on-hover" onClick={() => selectTool('pdftodocx')}>Convert Now</button>
+                    <button className="glow-on-hover" onClick={() => handleToolSelect('pdftodocx')}>Convert Now</button>
                   </div>
                   <div className="banner-item">
                     <h3>Ask AI About PDF</h3>
                     <p>Ask AI questions about your PDF files and get accurate answers.</p>
-                    <button className="glow-on-hover" onClick={() => selectTool('askpdf')}>Ask AI</button>
+                    <button className="glow-on-hover" onClick={() => handleToolSelect('askpdf')}>Ask AI</button>
                   </div>
                 </div>
               </div>
             )}
 
-            {fileUploaded && currentTool === 'pdftojpg' && <Pdftojpg file={file} />}
-            {fileUploaded && currentTool === 'pdftodocx' && <Pdftodocx file={file} />}
-            {fileUploaded && currentTool === 'askpdf' && <Askpdf file={file} />}
-            {fileUploaded && currentTool === 'pdftotxt' && <Summarize file={file} />}
+            {loading && (
+              <div className="loading-spinner">
+                <div className="spinner"></div>
+              </div>
+            )}
 
+            {!loading && fileUploaded && currentTool === 'pdftojpg' && <Pdftojpg file={file} />}
+            {!loading && fileUploaded && currentTool === 'pdftodocx' && <Pdftodocx file={file} />}
+            {!loading && fileUploaded && currentTool === 'askpdf' && <Askpdf file={file} />}
+            {!loading && fileUploaded && currentTool === 'pdftotxt' && <Summarize file={file} />}
           </div>
         </section>
 

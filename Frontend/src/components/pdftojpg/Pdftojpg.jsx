@@ -65,7 +65,6 @@ function Pdftojpg({ file }) {
     link.download = `page-${index + 1}.jpg`;
     link.click();
 
-    // Send file details to the backend to save
     const fileName = `page-${index + 1}.jpg`;
 
     try {
@@ -75,9 +74,9 @@ function Pdftojpg({ file }) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                username: localStorage.getItem('username'), // Assuming username is stored in localStorage
+                username: localStorage.getItem('username'),
                 fileName,
-                fileContent: image, // Optionally store base64 image content
+                fileContent: image, 
             }),
         });
 

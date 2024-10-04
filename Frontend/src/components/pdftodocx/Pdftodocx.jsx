@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './Pdftodocx.css';
+// import './Pdftodocx.css';
 
-function Pdftodocx({ file }) { // Accept file as a prop
+function Pdftodocx({ file }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [downloadUrl, setDownloadUrl] = useState('');
 
   useEffect(() => {
-    // Trigger conversion if file is passed as a prop
     if (file) {
       handleConvertPdfToDocx(file);
     }
-  }, [file]); // Dependency on file prop
+  }, [file]);
 
   const handleConvertPdfToDocx = async (pdfFile) => {
     if (!pdfFile) {
@@ -32,13 +31,12 @@ function Pdftodocx({ file }) { // Accept file as a prop
         formData,
         {
           headers: {
-            'x-api-key': "182423189", // Use your actual API key here
+            'x-api-key': "182423189",
             'Content-Type': 'multipart/form-data',
           },
         }
       );
 
-      // Validate response and URL
       if (response.data && response.data.url) {
         setDownloadUrl(response.data.url);
       } else {
@@ -68,7 +66,6 @@ function Pdftodocx({ file }) { // Accept file as a prop
           Download DOCX
         </a>
       )}
-
     </div>
   );
 }

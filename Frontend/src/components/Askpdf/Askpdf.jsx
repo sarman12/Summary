@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
-import './Askpdf.css'; // Ensure this file exists for styling
-import run from '../config/gemini'; // Adjust the path as needed
+import './Askpdf.css'; 
 
-function Askpdf({ file }) { // Accept file as a prop
+function Askpdf({ file }) { 
   const [extractedText, setExtractedText] = useState('');
-  const [input, setInput] = useState(''); // Store user query
+  const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [aiResponse, setAiResponse] = useState(''); // Store AI response
+  const [aiResponse, setAiResponse] = useState('');
 
   useEffect(() => {
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
     if (file) {
-      handleExtractText(file); // Extract text from the PDF file
+      handleExtractText(file);
     } else {
       setError('No PDF file provided. Please upload a file.');
     }
@@ -61,10 +60,10 @@ function Askpdf({ file }) { // Accept file as a prop
       return;
     }
     setLoading(true);
-    setAiResponse(''); // Clear previous response
+    setAiResponse('');
     try {
-      const aiResult = await run(input); // Send user input to the AI
-      setAiResponse(aiResult); // Update AI response state
+      const aiResult = await run(input); 
+      setAiResponse(aiResult);
     } catch (error) {
       console.error('Error getting AI response: ', error);
       setError('Failed to get response from AI.');

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import '../login/Login.css';
+import '../login/Login.css'; 
 
 function Register() {
   const navigate = useNavigate();
@@ -21,7 +21,6 @@ function Register() {
 
       try {
           const response = await axios.post('http://localhost:5000/register', {
-             
               username,
               email,
               password,
@@ -39,7 +38,6 @@ function Register() {
       }
   };
 
-
   return (
     <div className="login-container">
       <div className="login-content">
@@ -54,7 +52,7 @@ function Register() {
                 placeholder="Enter your username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                required // Optional: Add required attribute
+                required
               />
             </div>
             <div className="input-group">
@@ -64,7 +62,7 @@ function Register() {
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required // Optional: Add required attribute
+                required
               />
             </div>
             <div className="input-group">
@@ -74,7 +72,7 @@ function Register() {
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required // Optional: Add required attribute
+                required
               />
             </div>
             <div className="input-group">
@@ -84,7 +82,7 @@ function Register() {
                 placeholder="Confirm your password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                required // Optional: Add required attribute
+                required
               />
             </div>
             <div className="btns">
