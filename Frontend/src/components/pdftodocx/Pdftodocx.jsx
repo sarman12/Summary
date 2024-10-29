@@ -31,7 +31,7 @@ function Pdftodocx({ file }) {
         formData,
         {
           headers: {
-            'x-api-key': "182423189",
+            'x-api-key': "",
             'Content-Type': 'multipart/form-data',
           },
         }
